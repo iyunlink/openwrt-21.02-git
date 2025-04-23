@@ -1,0 +1,11 @@
+--- a/drivers/gpio/Kconfig	2024-05-29 20:10:23.882183531 +0800
++++ b/drivers/gpio/Kconfig	2024-05-29 20:10:27.566152069 +0800
+@@ -45,7 +45,7 @@
+ 
+ config GPIOLIB_IRQCHIP
+ 	select IRQ_DOMAIN
+-	bool
++	def_bool y
+ 
+ config DEBUG_GPIO
+ 	bool "Debug GPIO calls"

@@ -1,0 +1,41 @@
+--- a/drivers/net/dsa/mt7531_phy.c	2024-06-03 20:22:26.208781025 +0800
++++ b/drivers/net/dsa/mt7531_phy.c	2024-06-03 20:22:09.520893081 +0800
+@@ -1352,12 +1352,38 @@
+ 	tc_phy_write_dev_reg(ds, port, PHY_DEV1E, PHY_DEV1E_REG_A6, 0x300);
+ }
+ 
++static void mt7531_led_setting(struct dsa_switch *ds){
++	u32 val;
++	val = tc_phy_read_dev_reg(ds, 0, PHY_DEV1F, 0x21);
++	printk("dev1Fh reg021h=0x%x\n", val);
++	if(val == 0xb ){
++		val |= 0x8000;
++		tc_phy_write_dev_reg(ds, 0, PHY_DEV1F, 0x21, 0x800A);
++		val = tc_phy_read_dev_reg(ds, 0, PHY_DEV1F, 0x21);
++		printk("readback dev1Fh reg021h=0x%x\n", val);
++	}
++	tc_phy_write_dev_reg(ds, 0, PHY_DEV1F, 0x24, 0xC001);
++	tc_phy_write_dev_reg(ds, 0, PHY_DEV1F, 0x25, 0X3);
++	tc_phy_write_dev_reg(ds, 0, PHY_DEV1F, 0x26, 0xC007);
++	tc_phy_write_dev_reg(ds, 0, PHY_DEV1F, 0x27, 0x3C);
++
++	val = tc_phy_read_dev_reg(ds, 0, PHY_DEV1F, 0x24);
++	printk("dev1Fh reg024h=0x%x\n", val);
++	val = tc_phy_read_dev_reg(ds, 0, PHY_DEV1F, 0x25);
++	printk("dev1Fh reg025h=0x%x\n", val);
++	val = tc_phy_read_dev_reg(ds, 0, PHY_DEV1F, 0x26);
++	printk("dev1Fh reg026h=0x%x\n", val);
++	val = tc_phy_read_dev_reg(ds, 0, PHY_DEV1F, 0x27);
++	printk("dev1Fh reg027h=0x%x\n", val);
++}
++
+ int mt7531_phy_setup(struct dsa_switch *ds)
+ {
+ 	int ret = 0;
+ 	int i;
+ 
+ 	mt7531_phy_setting(ds);
++	mt7531_led_setting(ds);
+ 
+ 	for (i = 0; i < MT7531_NUM_PHYS; i++) {
+ 		mt7531_adjust_line_driving(ds, i);

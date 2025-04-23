@@ -1,0 +1,23 @@
+--- a/mt_wifi/hw_ctrl/cmm_chip_mt.c	2024-07-02 09:37:00.164831552 +0800
++++ b/mt_wifi/hw_ctrl/cmm_chip_mt.c	2024-07-02 09:35:14.313642163 +0800
+@@ -389,14 +389,15 @@
+ 	if (idx > 0) {
+ 		if (NdisEqualMemory(zeroMac, pAd->ExtendMBssAddr[idx - 1], MAC_ADDR_LEN)) {
+ 			COPY_MAC_ADDR(if_addr, pAd->CurrentAddress);
+-			if_addr[0] |= 0x2;
++			// if_addr[0] |= 0x2;
+ 			/* default choose bit[31:28], if there is no assigned mac from profile. */
+-			if_addr[3] = if_addr[3] & MacMask;/* clear high 4 bits, */
+-			if_addr[3] = (if_addr[3] | ((idx % 16) << 4));
++			// if_addr[3] = if_addr[3] & MacMask;/* clear high 4 bits, */
++			// if_addr[3] = (if_addr[3] | ((idx % 16) << 4));
+ 
+ 			/* reverse bit[24] if BssidNum >= 16 */
+-			if (idx >= 16)
+-				if_addr[3] ^= 0x1;
++			// if (idx >= 16)
++			// 	if_addr[3] ^= 0x1;
++			if_addr[5] += 0x1;
+ 
+ 			COPY_MAC_ADDR(pAd->ExtendMBssAddr[idx - 1], if_addr);
+ 		} else
